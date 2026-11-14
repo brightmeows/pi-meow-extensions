@@ -41,7 +41,8 @@ brightmeows 的 pi 扩展 monorepo：`packages/` 下每目录一个独立发布�
 - 版本语义按 crates.io 惯例：0.x 的 minor 既是新功能位也是依赖方眼中的破坏线（Cargo 把 `^0.1.0` 解为 `>=0.1.0 <0.2.0`）
 - 落到 release-please 就是 feat 走 minor、fix 走 patch、breaking 走 minor 而不跳 1.0.0，配置只开 `bump-minor-pre-major`
 - 不要加 `bump-patch-for-minor-pre-major`：那是 patch-only 派（feat 也落 patch），会让 minor 退化成只表示破坏，与上述语义相反
-- manifest 基线 0.0.0 表示尚未发布；首个 feat 据此算出 0.1.0
+- manifest 基线 0.0.0 表示尚未发布；但 release-please 会把 0.0.0 视作占位符而走 bootstrap（默认 1.0.0），故首发用顶层 `release-as` 锁版本
+- `release-as` 只在需要强制某次版本号时使用，该次 release PR 合并后必须立刻删除，否则后续每次发版都会重复用同一版本
 - 禁止手改 `packages/*/package.json` 的 `version`：版本号由 release PR 统一 bump，`.release-please-manifest.json` 是版本记录源
 - pi 对带 `CHANGELOG.md` 的包会在更新时弹 Extension Updates 提示；changelog 由 release-please 生成，不手写
 - `publishConfig.registry` 固定官方源：本机 npmrc 指镜像（npmmirror）不影响发布
