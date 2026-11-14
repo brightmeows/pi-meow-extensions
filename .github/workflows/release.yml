@@ -3,6 +3,7 @@ name: release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,43 +13,39 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v5
+      - uses: googleapis/release-please-action@v4
         id: release
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-    outputs:
-      releases_created: ${{ steps.release.outputs.releases_created }}
-      paths_released: ${{ steps.release.outputs.paths_released }}
 
   npm-publish:
     needs: release-please
-    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    if: ${{ always() && needs.release-please.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 26
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
-      - name: publish released packages
+      - name: publish packages missing from the registry
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          PATHS_RELEASED: ${{ needs.release-please.outputs.paths_released }}
         run: |
           set -euo pipefail
-          for path in $(echo "$PATHS_RELEASED" | jq -r '.[]'); do
-            name=$(node -p "require('./$path/package.json').name")
-            version=$(node -p "require('./$path/package.json').version")
+          for dir in packages/*/; do
+            name=$(node -p "require('./$dir/package.json').name")
+            version=$(node -p "require('./$dir/package.json').version")
             if npm view "$name@$version" version --registry https://registry.npmjs.org/ >/dev/null 2>&1; then
-              echo "$name@$version 已在 npm 上，跳过"
+              echo "$name@$version 已在 registry，跳过"
               continue
             fi
             echo "publishing $name@$version"
-            (cd "$path" && npm publish --access public --provenance)
+            (cd "$dir" && npm publish --access public --provenance)
           done
