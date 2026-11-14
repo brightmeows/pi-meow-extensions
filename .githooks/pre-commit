@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# 仓库原生 git hook（core.hooksPath 指向本目录，package.json prepare 安装）
+# format-check/lint 全量，markdownlint 与中文引号检查仅暂存 md；只检查不写回，
+# 失败时本地修复（pnpm format / pnpm lint:fix）后重新 git add 提交
+
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+if git rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1 ||
+  git rev-parse -q --verify CHERRY_PICK_HEAD >/dev/null 2>&1 ||
+  git rev-parse -q --verify REVERT_HEAD >/dev/null 2>&1; then
+  exit 0
+fi
+
+if git diff --cached --quiet; then
+  exit 0
+fi
+
+echo "format-check: pnpm format:check"
+pnpm format:check
+
+echo "lint: pnpm lint"
+pnpm lint
+
+echo "check: Pi 运行时与 devDeps 版本"
+pnpm check:pi
+
+mapfile -t md_files < <(git -c core.quotepath=off diff --cached --name-only --diff-filter=ACM -- '*.md')
+if ((${#md_files[@]} > 0)); then
+  echo "markdownlint: ${md_files[*]}"
+  markdownlint --config .markdownlint.toml "${md_files[@]}"
+
+  cq_files=()
+  if [[ -f .markdownlintignore ]]; then
+    mapfile -t cq_files < <(printf '%s\n' "${md_files[@]}" | grep -v -F -f .markdownlintignore)
+  else
+    cq_files=("${md_files[@]}")
+  fi
+  if ((${#cq_files[@]} > 0)); then
+    echo "cn-quotes: ${cq_files[*]}"
+    python3 scripts/check-cn-quotes.py "${cq_files[@]}"
+  fi
+fi
+
+if git -c core.quotepath=off diff --cached --name-only --diff-filter=ACM -- \
+  packages pnpm-lock.yaml | grep -q .; then
+  echo "test: 扩展单测"
+  pnpm test
+fi

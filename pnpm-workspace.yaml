@@ -1,0 +1,6 @@
+packages:
+  - "packages/*"
+# pi-ai 的传递依赖，仓库里只做类型检查，postinstall 不需要，显式拒绝
+allowBuilds:
+  "@google/genai": false
+  protobufjs: false

@@ -1,0 +1,99 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "deny",
+    "suspicious": "deny",
+    "perf": "deny",
+    "style": "deny",
+    "pedantic": "off"
+  },
+  "plugins": ["typescript", "oxc", "unicorn", "import"],
+  "rules": {
+    "complexity": ["deny", 15],
+    "max-depth": ["deny", 4],
+    "max-lines-per-function": ["deny", 100],
+    "no-console": "off",
+    "no-magic-numbers": "off",
+    "func-style": "off",
+    "id-length": "off",
+    "unicorn/no-null": "off",
+    "no-continue": "off",
+    "no-ternary": "off",
+    "max-statements": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "sort-keys": "off",
+    "init-declarations": "off",
+    "prefer-named-capture-group": "off",
+    "func-names": "off",
+    "sort-imports": "off",
+    "one-var": "off",
+    "new-cap": [
+      "deny",
+      {
+        "properties": false
+      }
+    ],
+    "import/no-named-export": "off",
+    "import/group-exports": "off",
+    "import/exports-last": "off",
+    "import/no-nodejs-modules": "off",
+    "import/consistent-type-specifier-style": "off",
+    "import/no-namespace": "off",
+    "import/prefer-default-export": "off",
+    "import/no-anonymous-default-export": "off",
+    "import/no-cycle": "deny",
+    "import/no-duplicates": "deny",
+    "import/no-self-import": "deny",
+    "eslint/require-unicode-regexp": "deny",
+    "unicorn/prefer-string-replace-all": "deny"
+  },
+  "ignorePatterns": ["node_modules"],
+  "overrides": [
+    {
+      "files": [
+        "packages/subdir-agents-md/index.ts",
+        "packages/subdir-agents-md/internal/path-extract.ts",
+        "packages/skill-reminders/internal/bash-paths.ts",
+        "packages/models-dev/index.ts",
+        "packages/models-dev/internal/mapping.ts",
+        "packages/inline-context/index.ts"
+      ],
+      "rules": {
+        "complexity": ["deny", 50],
+        "max-depth": ["deny", 5],
+        "max-lines-per-function": ["deny", 165]
+      }
+    },
+    {
+      "files": ["packages/ask-user-question/**"],
+      "rules": {
+        "complexity": ["deny", 25],
+        "curly": "off",
+        "capitalized-comments": "off",
+        "max-params": "off",
+        "prefer-destructuring": "off",
+        "no-await-in-loop": "off",
+        "no-control-regex": "off",
+        "no-duplicate-imports": "off",
+        "eslint/no-nested-ternary": "off",
+        "typescript/array-type": "off",
+        "typescript/method-signature-style": "off",
+        "typescript/consistent-type-definitions": "off",
+        "typescript/consistent-type-imports": "off",
+        "typescript/no-inferrable-types": "off",
+        "typescript/consistent-indexed-object-style": "off",
+        "unicorn/switch-case-braces": "off",
+        "unicorn/max-nested-calls": "off",
+        "unicorn/consistent-existence-index-check": "off",
+        "unicorn/prefer-export-from": "off",
+        "unicorn/prefer-logical-operator-over-ternary": "off",
+        "unicorn/catch-error-name": "off",
+        "unicorn/text-encoding-identifier-case": "off",
+        "unicorn/no-nested-ternary": "off",
+        "oxc/no-map-spread": "off",
+        "eslint/require-unicode-regexp": "off",
+        "unicorn/prefer-string-replace-all": "off"
+      }
+    }
+  ]
+}
