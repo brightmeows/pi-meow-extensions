@@ -41,7 +41,14 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           PATHS_RELEASED: ${{ needs.release-please.outputs.paths_released }}
         run: |
+          set -euo pipefail
           for path in $(echo "$PATHS_RELEASED" | jq -r '.[]'); do
-            echo "publishing $path"
+            name=$(node -p "require('./$path/package.json').name")
+            version=$(node -p "require('./$path/package.json').version")
+            if npm view "$name@$version" version --registry https://registry.npmjs.org/ >/dev/null 2>&1; then
+              echo "$name@$version 已在 npm 上，跳过"
+              continue
+            fi
+            echo "publishing $name@$version"
             (cd "$path" && npm publish --access public --provenance)
           done
