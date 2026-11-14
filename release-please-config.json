@@ -1,0 +1,48 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "packages": {
+    "packages/aliases": {
+      "component": "pi-aliases"
+    },
+    "packages/ask-user-question": {
+      "component": "pi-ask-user-question"
+    },
+    "packages/editor-input-tweaks": {
+      "component": "pi-tui-editor-input-tweaks"
+    },
+    "packages/esc-hold": {
+      "component": "pi-tui-esc-hold"
+    },
+    "packages/git-attribution": {
+      "component": "pi-git-attribution"
+    },
+    "packages/git-hooks": {
+      "component": "pi-git-hooks"
+    },
+    "packages/herdr-blocked": {
+      "component": "pi-herdr-blocked"
+    },
+    "packages/inline-context": {
+      "component": "pi-inline-context"
+    },
+    "packages/models-dev": {
+      "component": "pi-models-dev"
+    },
+    "packages/skill-reminders": {
+      "component": "pi-skill-reminders"
+    },
+    "packages/statusline": {
+      "component": "pi-tui-statusline"
+    },
+    "packages/subdir-agents-md": {
+      "component": "pi-subdir-agents-md"
+    },
+    "packages/thinking-flow": {
+      "component": "pi-tui-thinking-flow"
+    },
+    "packages/working-status": {
+      "component": "pi-tui-working-status"
+    }
+  }
+}
