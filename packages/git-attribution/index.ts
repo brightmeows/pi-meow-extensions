@@ -14,8 +14,8 @@
  *   保证 pre-commit、commit-msg、post-commit 等不被 core.hooksPath 覆盖跳过；
  * - 临时 prepare-commit-msg 先执行仓库原有 hook（失败仍中止提交），再按
  *   merge/squash 跳过、规范化旧 agent 署名、追加
- *   Co-Authored-By: 白小喵 <noreply@pi.dev>
- *   与 Generated-By: pi <版本> (模型 @ provider, reasoning=档位)；
+ *   Generated-By: pi <版本> (模型 @ provider, reasoning=档位)；
+ *   配置 coAuthor.name 与 coAuthor.email 后追加 Co-Authored-By: <姓名> <邮箱>；
  * - 会话结束删除临时目录，仓库本身零改动。
  *
  * 为什么不用命令改写：追加 -m/--trailer 只能覆盖直接 git commit，脚本内提交、
@@ -31,7 +31,8 @@
  *
  * - 全局 <agent dir>/git-attribution.json，仓库 <repo>/.pi/git-attribution.json；
  * - 仓库覆盖全局，字段级合并；session_start 读取，/reload 或重启生效；
- * - 只配置 coAuthor.name 与 coAuthor.email，默认白小喵 / noreply@pi.dev。
+ * - coAuthor.name 与 coAuthor.email 都配置才注入 Co-Authored-By（默认关），
+ *   Generated-By 恒注入；全局与仓库文件字段级合并。
  *
  * 边界：git commit-tree、git revert、git am、rebase 内部提交通常不触发
  * prepare-commit-msg；env -i、sudo 未带 -E、容器清空环境变量时也不会加。

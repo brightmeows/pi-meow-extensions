@@ -7,10 +7,10 @@
  * 2. 执行仓库原有 prepare-commit-msg；失败时按 git 语义原样退出。
  * 3. 读取会话级与仓库级退出开关；一旦关闭，只保留原有 hook 的行为。
  * 4. merge/squash 来源直接跳过，不给汇总提交加 agent 署名。
- * 5. 用 awk 删除旧的 agent 署名：邮箱等于配置邮箱或 noreply@pi.dev 的行，
- *    以及含白小喵 / brightmia 的历史行；保留人类 co-author 与其他 trailer。
- * 6. 用 git interpret-trailers 追加规范 trailer；任何一步失败都只告警，
- *    不阻塞提交。
+ * 5. 用 awk 删除旧的 agent 署名：noreply@pi.dev 邮箱行、含白小喵 / brightmia
+ *    的历史行与配置邮箱命中行；保留人类 co-author 与其他 trailer。
+ * 6. 用 git interpret-trailers 追加规范 trailer；Co-Authored-By 仅在配置了
+ *    coAuthor 时追加，Generated-By 恒追加；任何一步失败都只告警，不阻塞提交。
  *
  * 这里刻意使用 POSIX sh 与 awk，不依赖 Node：Pi 既可能跑在 Node 上，也可能
  * 以 Bun 编译的独立二进制运行，process.execPath 不一定是 JS 解释器。
@@ -117,9 +117,9 @@ case "$msg_source" in
 esac
 
 co_author="\${PI_GIT_ATTRIBUTION_CO_AUTHOR:-}"
-co_author_email="\${PI_GIT_ATTRIBUTION_CO_AUTHOR_EMAIL:-noreply@pi.dev}"
+co_author_email="\${PI_GIT_ATTRIBUTION_CO_AUTHOR_EMAIL:-}"
 generated_by="\${PI_GIT_ATTRIBUTION_GENERATED_BY:-}"
-[ -n "$co_author" ] || exit 0
+[ -n "$co_author" ] || [ -n "$generated_by" ] || exit 0
 
 tmp="$message_file.pi-attribution-tmp"
 if ! awk -v email="$co_author_email" '
@@ -147,10 +147,14 @@ if ! mv "$tmp" "$message_file"; then
   exit 0
 fi
 
-set -- --trailer "$co_author"
+set --
+if [ -n "$co_author" ]; then
+  set -- "$@" --trailer "$co_author"
+fi
 if [ -n "$generated_by" ]; then
   set -- "$@" --trailer "$generated_by"
 fi
+[ $# -gt 0 ] || exit 0
 
 if ! git -c trailer.co-authored-by.ifExists=addIfDifferent \\
     -c trailer.generated-by.ifExists=addIfDifferent \\

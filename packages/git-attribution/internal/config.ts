@@ -3,11 +3,12 @@
  *
  * 配置来源按优先级从低到高：
  *
- * 1. 代码默认值：白小喵 <noreply@pi.dev>
+ * 1. 代码默认值：不注入 Co-Authored-By（coAuthor 缺省关闭）
  * 2. 全局文件：<agent dir>/git-attribution.json
  * 3. 仓库文件：<repo root>/.pi/git-attribution.json
  *
- * 合并是字段级的：仓库只写 email 时，name 继续用全局值。配置在
+ * 合并是字段级的：仓库只写 email 时，name 继续用全局值。coAuthor.name 与
+ * coAuthor.email 都有值才注入 Co-Authored-By，缺任一字段视为未配置。配置在
  * session_start 读取一次，/reload 或重启生效。仓库根从会话 cwd 解析，
  * 因此 `git -C` 其他仓库的提交仍使用会话仓库的配置，作为已知边界。
  *
@@ -20,18 +21,13 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 export interface AttributionConfig {
-  coAuthor: {
+  coAuthor?: {
     name: string;
     email: string;
   };
 }
 
-export const DEFAULT_CONFIG: AttributionConfig = {
-  coAuthor: {
-    name: "白小喵",
-    email: "noreply@pi.dev",
-  },
-};
+export const DEFAULT_CONFIG: AttributionConfig = {};
 
 const CONFIG_FILENAME = "git-attribution.json";
 const TOP_LEVEL_KEYS = new Set(["coAuthor"]);
@@ -67,6 +63,7 @@ export function applyConfig(config: AttributionConfig, raw: unknown, source: str
   }
   warnUnknownKeys(coAuthor, CO_AUTHOR_KEYS, source);
 
+  config.coAuthor ??= { name: "", email: "" };
   const name = readNonEmptyString(coAuthor["name"], `${source}: coAuthor.name`);
   if (name !== undefined) {
     config.coAuthor.name = sanitizeName(name);
@@ -77,10 +74,9 @@ export function applyConfig(config: AttributionConfig, raw: unknown, source: str
   }
 }
 
-/** 清洗姓名；空值退回默认姓名。 */
+/** 清洗姓名；清洗后为空返回空串，coAuthor 完整性由调用方判定。 */
 export function sanitizeName(value: string): string {
-  const cleaned = value.replaceAll(UNSAFE_NAME_CHARS, " ").replaceAll(WHITESPACE, " ").trim();
-  return cleaned === "" ? DEFAULT_CONFIG.coAuthor.name : cleaned;
+  return value.replaceAll(UNSAFE_NAME_CHARS, " ").replaceAll(WHITESPACE, " ").trim();
 }
 
 /** 清洗邮箱；去掉包裹尖括号，缺 @ 时返回 undefined。 */
@@ -94,9 +90,7 @@ export function normalizeEmail(value: string): string | undefined {
 }
 
 function cloneDefaults(): AttributionConfig {
-  return {
-    coAuthor: { ...DEFAULT_CONFIG.coAuthor },
-  };
+  return { ...DEFAULT_CONFIG };
 }
 
 function applyFile(config: AttributionConfig, path: string): void {

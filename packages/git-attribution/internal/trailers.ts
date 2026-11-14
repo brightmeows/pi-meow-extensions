@@ -1,7 +1,7 @@
 /**
  * 提交署名格式化与 git 运行时配置注入（纯库，无 Pi 运行时依赖）。
  *
- * 署名格式：
+ * 署名格式（Co-Authored-By 仅在配置完整时输出，缺省关闭）：
  *
  *   Co-Authored-By: <配置姓名> <配置邮箱>
  *   Generated-By: pi <版本> (<模型ID> @ <provider>, reasoning=<档位>)
@@ -41,8 +41,9 @@ export function buildAttribution(
   version: string,
   config: AttributionConfig = DEFAULT_CONFIG,
 ): Attribution {
-  const name = sanitizeName(config.coAuthor.name);
-  const email = normalizeEmail(config.coAuthor.email) ?? DEFAULT_CONFIG.coAuthor.email;
+  const coAuthorName = config.coAuthor === undefined ? "" : sanitizeName(config.coAuthor.name);
+  const coAuthorEmail =
+    config.coAuthor === undefined ? undefined : normalizeEmail(config.coAuthor.email);
   const model = sanitizeModel(env["PI_MODEL"], env["PI_PROVIDER"]);
   const provider = sanitize(env["PI_PROVIDER"] ?? "");
   const reasoning = sanitizeReasoning(env["PI_REASONING_LEVEL"]);
@@ -54,9 +55,16 @@ export function buildAttribution(
     parts.push(`reasoning=${reasoning}`);
   }
   const suffix = parts.length === 0 ? "" : ` (${parts.join(", ")})`;
+  const coAuthor =
+    coAuthorName !== "" && coAuthorEmail !== undefined
+      ? {
+          line: `Co-Authored-By: ${coAuthorName} <${coAuthorEmail}>`,
+          email: coAuthorEmail,
+        }
+      : undefined;
   return {
-    coAuthor: `Co-Authored-By: ${name} <${email}>`,
-    coAuthorEmail: email,
+    coAuthor: coAuthor === undefined ? "" : coAuthor.line,
+    coAuthorEmail: coAuthor === undefined ? "" : coAuthor.email,
     generatedBy: `Generated-By: pi ${version}${suffix}`,
   };
 }

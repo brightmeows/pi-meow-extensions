@@ -93,6 +93,17 @@ test("普通提交追加规范 trailer", (t) => {
   assert.equal(count(message, GENERATED_BY), 1);
 });
 
+test("只配置 Generated-By 时跳过 co-author", (t) => {
+  const repo = createRepo(t);
+  commit(repo, "feat: generated only", {
+    PI_GIT_ATTRIBUTION_CO_AUTHOR: "",
+    PI_GIT_ATTRIBUTION_CO_AUTHOR_EMAIL: "",
+  });
+  const message = lastMessage(repo);
+  assert.equal(count(message, CO_AUTHOR), 0);
+  assert.equal(count(message, GENERATED_BY), 1);
+});
+
 test("规范化旧 agent 署名并保留人类 co-author", (t) => {
   const repo = createRepo(t);
   commit(
