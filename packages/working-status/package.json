@@ -1,0 +1,32 @@
+{
+  "name": "@brightmeows/pi-tui-working-status",
+  "version": "0.1.0",
+  "description": "Working 行多状态计时文案",
+  "keywords": [
+    "pi-package",
+    "tui"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
+    "directory": "packages/working-status"
+  },
+  "files": [
+    "**/*.ts",
+    "!**/*.test.ts"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

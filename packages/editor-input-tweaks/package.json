@@ -1,0 +1,33 @@
+{
+  "name": "@brightmeows/pi-tui-editor-input-tweaks",
+  "version": "0.1.0",
+  "description": "编辑器输入增强：/@ 标记符着色与 / 补全停留",
+  "keywords": [
+    "pi-package",
+    "tui"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
+    "directory": "packages/editor-input-tweaks"
+  },
+  "files": [
+    "**/*.ts",
+    "!**/*.test.ts"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

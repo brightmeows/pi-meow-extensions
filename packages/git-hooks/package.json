@@ -1,0 +1,33 @@
+{
+  "name": "@brightmeows/pi-git-hooks",
+  "version": "0.1.0",
+  "description": "仓库 git hooks 自动配置：core.hooksPath 与 pre-commit install",
+  "keywords": [
+    "git",
+    "pi-package"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
+    "directory": "packages/git-hooks"
+  },
+  "files": [
+    "**/*.ts",
+    "!**/*.test.ts"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

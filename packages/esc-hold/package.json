@@ -1,0 +1,33 @@
+{
+  "name": "@brightmeows/pi-tui-esc-hold",
+  "version": "0.1.0",
+  "description": "Esc 防误触：双击或长按才中断",
+  "keywords": [
+    "pi-package",
+    "tui"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
+    "directory": "packages/esc-hold"
+  },
+  "files": [
+    "**/*.ts",
+    "!**/*.test.ts"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@brightmeows/pi-tui-statusline",
+  "version": "0.1.0",
+  "description": "状态栏 footer 自定义布局与下边框流式速度",
+  "keywords": [
+    "pi-package",
+    "tui"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
+    "directory": "packages/statusline"
+  },
+  "files": [
+    "**/*.ts",
+    "!**/*.test.ts"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

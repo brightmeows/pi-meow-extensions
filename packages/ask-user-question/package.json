@@ -1,0 +1,45 @@
+{
+  "name": "@brightmeows/pi-ask-user-question",
+  "version": "0.1.0",
+  "description": "@juicesharp/rpiv-ask-user-question 的 fork：结构化问卷工具，移除单次调用题数上限",
+  "keywords": [
+    "ask",
+    "pi-package"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
+    "directory": "packages/ask-user-question"
+  },
+  "files": [
+    "**/*.ts",
+    "!**/*.test.ts",
+    "docs"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./events": "./events.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "@juicesharp/rpiv-i18n": "*",
+    "typebox": "*"
+  },
+  "peerDependenciesMeta": {
+    "@juicesharp/rpiv-i18n": {
+      "optional": true
+    }
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}
