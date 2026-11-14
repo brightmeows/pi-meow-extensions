@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-ask-user-question",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "@juicesharp/rpiv-ask-user-question 的 fork：结构化问卷工具，移除单次调用题数上限",
   "keywords": [
     "ask",

@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-tui-working-status",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Working 行多状态计时文案",
   "keywords": [
     "pi-package",
