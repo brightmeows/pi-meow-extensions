@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-tui-thinking-flow",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "thinking 呈现接管：流式完整渲染、历史收起可展开",
   "keywords": [
     "pi-package",

@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-inline-context",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "会话环境摘要注入：日期、系统、Git 状态与工具清单",
   "keywords": [
     "context",

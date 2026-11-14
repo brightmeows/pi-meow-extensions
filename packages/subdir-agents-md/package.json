@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-subdir-agents-md",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "子目录 AGENTS.md 规则懒加载注入",
   "keywords": [
     "context",

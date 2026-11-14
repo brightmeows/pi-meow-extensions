@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-herdr-blocked",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "herdr blocked 态上报桥接",
   "keywords": [
     "herdr",

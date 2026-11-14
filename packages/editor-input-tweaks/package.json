@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-tui-editor-input-tweaks",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "编辑器输入增强：/@ 标记符着色与 / 补全停留",
   "keywords": [
     "pi-package",
