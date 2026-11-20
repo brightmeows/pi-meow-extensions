@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-git-attribution",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "agent 提交自动署名：Co-Authored-By 与 Generated-By trailer",
   "keywords": [
     "git",

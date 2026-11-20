@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-skill-reminders",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "技能专项提醒注入：read/edit/write 与 bash 通道",
   "keywords": [
     "pi-package",

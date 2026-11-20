@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-tui-esc-hold",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Esc 防误触：双击或长按才中断",
   "keywords": [
     "pi-package",
