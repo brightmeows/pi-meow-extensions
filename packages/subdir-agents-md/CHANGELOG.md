@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/brightmeows/pi-meow-extensions/compare/pi-subdir-agents-md-v0.1.0...pi-subdir-agents-md-v0.1.1) (2026-11-20)
+
+
+### Bug Fixes
+
+* 补全 14 个包的 homepage 与 bugs 元数据 ([e357ff4](https://github.com/brightmeows/pi-meow-extensions/commit/e357ff4baae769fc7fa7fa61eba19b33774daa09))
+
 ## 0.1.0 (2026-11-14)
 
 

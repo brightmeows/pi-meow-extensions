@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-models-dev",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "models.dev 模型目录导入：协议感知注册与用户配置",
   "keywords": [
     "models",
