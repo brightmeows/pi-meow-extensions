@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/brightmeows/pi-meow-extensions/compare/pi-tui-statusline-v0.1.1...pi-tui-statusline-v0.1.2) (2026-11-20)
+
+
+### Bug Fixes
+
+* **pi-tui-statusline:** 延迟回调容忍失效的扩展 ctx ([af74ad6](https://github.com/brightmeows/pi-meow-extensions/commit/af74ad6e08ac267b2468e10a2d586fd0f9d5c7ed))
+
 ## [0.1.1](https://github.com/brightmeows/pi-meow-extensions/compare/pi-tui-statusline-v0.1.0...pi-tui-statusline-v0.1.1) (2026-11-20)
 
 

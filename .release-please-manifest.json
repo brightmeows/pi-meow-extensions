@@ -9,7 +9,7 @@
   "packages/inline-context": "0.1.1",
   "packages/models-dev": "0.1.1",
   "packages/skill-reminders": "0.1.1",
-  "packages/statusline": "0.1.1",
+  "packages/statusline": "0.1.2",
   "packages/subdir-agents-md": "0.1.1",
   "packages/thinking-flow": "0.1.1",
   "packages/working-status": "0.1.1"

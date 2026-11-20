@@ -1,6 +1,6 @@
 {
   "name": "@brightmeows/pi-tui-statusline",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "状态栏 footer 自定义布局与下边框流式速度",
   "keywords": [
     "pi-package",
