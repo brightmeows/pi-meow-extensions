@@ -18,10 +18,14 @@ jobs:
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
 
   npm-publish:
     needs: release-please
-    if: ${{ always() && needs.release-please.result == 'success' }}
+    if: >-
+      always() && needs.release-please.result == 'success' &&
+      (needs.release-please.outputs.releases_created == 'true' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
       contents: read
