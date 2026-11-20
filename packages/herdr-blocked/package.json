@@ -6,6 +6,10 @@
     "herdr",
     "pi-package"
   ],
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/herdr-blocked#readme",
+  "bugs": {
+    "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",

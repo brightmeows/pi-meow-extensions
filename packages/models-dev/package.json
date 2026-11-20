@@ -6,6 +6,10 @@
     "models",
     "pi-package"
   ],
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/models-dev#readme",
+  "bugs": {
+    "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",

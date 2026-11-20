@@ -6,6 +6,10 @@
     "cmd",
     "pi-package"
   ],
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/aliases#readme",
+  "bugs": {
+    "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",

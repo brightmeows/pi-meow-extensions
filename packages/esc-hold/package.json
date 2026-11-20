@@ -6,6 +6,10 @@
     "pi-package",
     "tui"
   ],
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/esc-hold#readme",
+  "bugs": {
+    "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
