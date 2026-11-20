@@ -367,7 +367,14 @@ function install(ctx: ExtensionContext): void {
 export default function statusline(pi: ExtensionAPI): void {
   pi.on("session_start", (_event, ctx) => {
     if (readEnabled()) {
-      setTimeout(() => install(ctx), FOOTER_INSTALL_DELAY_MS);
+      setTimeout(() => {
+        try {
+          install(ctx);
+        } catch {
+          // 延迟安装期间 session 可能已被替换（headless 收尾），旧 ctx 失效即跳过；
+          // 该提示只服务 TUI，headless 下没有安装对象。
+        }
+      }, FOOTER_INSTALL_DELAY_MS);
     }
   });
 
@@ -393,8 +400,12 @@ export default function statusline(pi: ExtensionAPI): void {
     // 但若此后再无渲染帧，下边框会冻结在流式末帧（1s 段残留）。
     // 此刻必然 idle，setWorkingVisible(true) 仅触发 requestRender
     setTimeout(() => {
-      if (ctx.isIdle()) {
-        ctx.ui.setWorkingVisible(true);
+      try {
+        if (ctx.isIdle()) {
+          ctx.ui.setWorkingVisible(true);
+        }
+      } catch {
+        // 同上：session 替换后 ctx 失效，本次重绘没有事务意义。
       }
     }, 100);
   });
