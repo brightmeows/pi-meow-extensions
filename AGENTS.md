@@ -21,7 +21,7 @@ brightmeows 的 pi 扩展 monorepo：`packages/` 下每目录一个独立发布�
 
 ## 包约定
 
-- 一包一扩展，完全自包含：包间零 import，需复用的模块各包自备副本，无同步义务；目录名用语义短名，不跟包名走
+- 一包一扩展，完全自包含：包间零 import，需复用的模块各包自备副本，无同步义务；目录名取包名去掉 `pi-` 前缀（`pi-tui-statusline` 对应 `packages/tui-statusline`），目录与包名一一可推导，改包名必须连带改目录与 release-please 两处路径键
 - 入口 `index.ts`，必须 `export default function (pi)`（仅命名导出加载报错）；包内纯库归 `internal/`
 - 包名规则 `pi-<域>-<名>`：域词表 tui / git / models / skills / ask / herdr；域已在名首则不再重复标（git-hooks、models-dev、skill-reminders、herdr-blocked 即此形态）
 - keywords 固定含 `pi-package` 加域词；description 一句话中文；发布物 TS 源码直发（pi 用 jiti 加载），`files` 白名单排除 `*.test.ts`

@@ -1,12 +1,12 @@
 {
-  "name": "@brightmeows/pi-tui-working-status",
+  "name": "@brightmeows/pi-tui-editor-input-tweaks",
   "version": "0.1.1",
-  "description": "Working 行多状态计时文案",
+  "description": "编辑器输入增强：/@ 标记符着色与 / 补全停留",
   "keywords": [
     "pi-package",
     "tui"
   ],
-  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/working-status#readme",
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/tui-editor-input-tweaks#readme",
   "bugs": {
     "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
   },
@@ -14,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
-    "directory": "packages/working-status"
+    "directory": "packages/tui-editor-input-tweaks"
   },
   "files": [
     "**/*.ts",
@@ -26,7 +26,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
-    "@earendil-works/pi-coding-agent": "*"
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
   },
   "pi": {
     "extensions": [

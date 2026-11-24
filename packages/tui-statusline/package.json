@@ -1,12 +1,12 @@
 {
-  "name": "@brightmeows/pi-tui-thinking-flow",
-  "version": "0.1.1",
-  "description": "thinking 呈现接管：流式完整渲染、历史收起可展开",
+  "name": "@brightmeows/pi-tui-statusline",
+  "version": "0.1.2",
+  "description": "状态栏 footer 自定义布局与下边框流式速度",
   "keywords": [
     "pi-package",
     "tui"
   ],
-  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/thinking-flow#readme",
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/tui-statusline#readme",
   "bugs": {
     "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
   },
@@ -14,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
-    "directory": "packages/thinking-flow"
+    "directory": "packages/tui-statusline"
   },
   "files": [
     "**/*.ts",

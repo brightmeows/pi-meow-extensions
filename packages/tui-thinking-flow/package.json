@@ -1,12 +1,12 @@
 {
-  "name": "@brightmeows/pi-tui-editor-input-tweaks",
+  "name": "@brightmeows/pi-tui-thinking-flow",
   "version": "0.1.1",
-  "description": "编辑器输入增强：/@ 标记符着色与 / 补全停留",
+  "description": "thinking 呈现接管：流式完整渲染、历史收起可展开",
   "keywords": [
     "pi-package",
     "tui"
   ],
-  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/editor-input-tweaks#readme",
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/tui-thinking-flow#readme",
   "bugs": {
     "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
   },
@@ -14,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
-    "directory": "packages/editor-input-tweaks"
+    "directory": "packages/tui-thinking-flow"
   },
   "files": [
     "**/*.ts",
@@ -26,6 +26,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
     "@earendil-works/pi-coding-agent": "*",
     "@earendil-works/pi-tui": "*"
   },

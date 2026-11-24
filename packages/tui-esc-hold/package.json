@@ -1,12 +1,12 @@
 {
-  "name": "@brightmeows/pi-tui-statusline",
-  "version": "0.1.2",
-  "description": "状态栏 footer 自定义布局与下边框流式速度",
+  "name": "@brightmeows/pi-tui-esc-hold",
+  "version": "0.1.1",
+  "description": "Esc 防误触：双击或长按才中断",
   "keywords": [
     "pi-package",
     "tui"
   ],
-  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/statusline#readme",
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/tui-esc-hold#readme",
   "bugs": {
     "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
   },
@@ -14,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
-    "directory": "packages/statusline"
+    "directory": "packages/tui-esc-hold"
   },
   "files": [
     "**/*.ts",
@@ -26,7 +26,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
-    "@earendil-works/pi-ai": "*",
     "@earendil-works/pi-coding-agent": "*",
     "@earendil-works/pi-tui": "*"
   },

@@ -212,24 +212,6 @@ importers:
         specifier: '*'
         version: 1.3.27
 
-  packages/editor-input-tweaks:
-    dependencies:
-      '@earendil-works/pi-coding-agent':
-        specifier: '*'
-        version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(ws@8.23.0)
-      '@earendil-works/pi-tui':
-        specifier: '*'
-        version: 1.5.2
-
-  packages/esc-hold:
-    dependencies:
-      '@earendil-works/pi-coding-agent':
-        specifier: '*'
-        version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(ws@8.23.0)
-      '@earendil-works/pi-tui':
-        specifier: '*'
-        version: 1.5.2
-
   packages/git-attribution:
     dependencies:
       '@earendil-works/pi-coding-agent':
@@ -278,25 +260,31 @@ importers:
         specifier: '*'
         version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(ws@8.23.0)
 
-  packages/statusline:
-    dependencies:
-      '@earendil-works/pi-ai':
-        specifier: '*'
-        version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(undici@8.12.3)(ws@8.23.0)
-      '@earendil-works/pi-coding-agent':
-        specifier: '*'
-        version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(ws@8.23.0)
-      '@earendil-works/pi-tui':
-        specifier: '*'
-        version: 1.5.2
-
   packages/subdir-agents-md:
     dependencies:
       '@earendil-works/pi-coding-agent':
         specifier: '*'
         version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(ws@8.23.0)
 
-  packages/thinking-flow:
+  packages/tui-editor-input-tweaks:
+    dependencies:
+      '@earendil-works/pi-coding-agent':
+        specifier: '*'
+        version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(ws@8.23.0)
+      '@earendil-works/pi-tui':
+        specifier: '*'
+        version: 1.5.2
+
+  packages/tui-esc-hold:
+    dependencies:
+      '@earendil-works/pi-coding-agent':
+        specifier: '*'
+        version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(ws@8.23.0)
+      '@earendil-works/pi-tui':
+        specifier: '*'
+        version: 1.5.2
+
+  packages/tui-statusline:
     dependencies:
       '@earendil-works/pi-ai':
         specifier: '*'
@@ -308,7 +296,19 @@ importers:
         specifier: '*'
         version: 1.5.2
 
-  packages/working-status:
+  packages/tui-thinking-flow:
+    dependencies:
+      '@earendil-works/pi-ai':
+        specifier: '*'
+        version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(undici@8.12.3)(ws@8.23.0)
+      '@earendil-works/pi-coding-agent':
+        specifier: '*'
+        version: 1.5.2(@aws-sdk/credential-provider-node@3.972.97)(@smithy/signature-v4@5.7.5)(ws@8.23.0)
+      '@earendil-works/pi-tui':
+        specifier: '*'
+        version: 1.5.2
+
+  packages/tui-working-status:
     dependencies:
       '@earendil-works/pi-coding-agent':
         specifier: '*'

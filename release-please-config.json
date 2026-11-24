@@ -9,12 +9,6 @@
     "packages/ask-user-question": {
       "component": "pi-ask-user-question"
     },
-    "packages/editor-input-tweaks": {
-      "component": "pi-tui-editor-input-tweaks"
-    },
-    "packages/esc-hold": {
-      "component": "pi-tui-esc-hold"
-    },
     "packages/git-attribution": {
       "component": "pi-git-attribution"
     },
@@ -33,16 +27,22 @@
     "packages/skill-reminders": {
       "component": "pi-skill-reminders"
     },
-    "packages/statusline": {
-      "component": "pi-tui-statusline"
-    },
     "packages/subdir-agents-md": {
       "component": "pi-subdir-agents-md"
     },
-    "packages/thinking-flow": {
+    "packages/tui-editor-input-tweaks": {
+      "component": "pi-tui-editor-input-tweaks"
+    },
+    "packages/tui-esc-hold": {
+      "component": "pi-tui-esc-hold"
+    },
+    "packages/tui-statusline": {
+      "component": "pi-tui-statusline"
+    },
+    "packages/tui-thinking-flow": {
       "component": "pi-tui-thinking-flow"
     },
-    "packages/working-status": {
+    "packages/tui-working-status": {
       "component": "pi-tui-working-status"
     }
   }

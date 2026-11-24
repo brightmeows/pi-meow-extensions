@@ -1,12 +1,12 @@
 {
-  "name": "@brightmeows/pi-tui-esc-hold",
+  "name": "@brightmeows/pi-tui-working-status",
   "version": "0.1.1",
-  "description": "Esc 防误触：双击或长按才中断",
+  "description": "Working 行多状态计时文案",
   "keywords": [
     "pi-package",
     "tui"
   ],
-  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/esc-hold#readme",
+  "homepage": "https://github.com/brightmeows/pi-meow-extensions/tree/main/packages/tui-working-status#readme",
   "bugs": {
     "url": "https://github.com/brightmeows/pi-meow-extensions/issues"
   },
@@ -14,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brightmeows/pi-meow-extensions.git",
-    "directory": "packages/esc-hold"
+    "directory": "packages/tui-working-status"
   },
   "files": [
     "**/*.ts",
@@ -26,8 +26,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
-    "@earendil-works/pi-coding-agent": "*",
-    "@earendil-works/pi-tui": "*"
+    "@earendil-works/pi-coding-agent": "*"
   },
   "pi": {
     "extensions": [
