@@ -50,6 +50,8 @@ brightmeows 的 pi 扩展 monorepo：`packages/` 下每目录一个独立发布�
 
 ## 检查门禁与棘轮
 
+- main 分支由 GitHub ruleset 保护：只能经 PR 合并，必须过 `checks` 状态检查，禁止直推、强推与删除；本地验证完成后推特性分支再开 PR
+- PR 合并须经前辈人工确认：代理开完 PR、`checks` 全绿后停下报告，等前辈明确说合并再执行；不开启 auto-merge
 - 提交须过 pre-commit（format、lint、漂移检查、md 检查，单测按改动路径触发）；失败先本地修，不绕过
 - `pnpm check` 只保证类型与版本一致，不验证运行时行为；扩展代码的提交正文须记录运行时实测（命令与结果）
 - oxlint overrides 是存量热点棘轮（subdir-agents-md、skill-reminders、models-dev、inline-context 的复杂度放宽与 ask-user-question 的上游风格豁免）：只许收紧删除，不许放松；触碰重构后从 overrides 移除对应条目
