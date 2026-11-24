@@ -30,6 +30,11 @@ updates:
     open-pull-requests-limit: 20
     commit-message:
       prefix: "deps"
+    ignore:
+      # pi 运行时决定这三包与 typebox 的精确版本，由 check-pi-version 校验对齐，
+      # 自动升级只会被检查拦下，改随 pi 升级手动同步
+      - dependency-name: "@earendil-works/*"
+      - dependency-name: "typebox"
     groups:
       npm:
         patterns:
