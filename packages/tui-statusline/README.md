@@ -27,7 +27,7 @@ pi install npm:@brightmeows/pi-tui-statusline
 
 ## 版本敏感性
 
-下边框经 monkey-patch `CustomEditor` 的渲染方法实现，footer 依赖 pi 内部组件结构，跨 pi 升级必须 tmux 实测复核。当前实测 pi 1.5.2。
+下边框经 monkey-patch `CustomEditor` 的渲染方法实现，footer 依赖 pi 内部组件结构，跨 pi 升级必须 tmux 实测复核。当前实测 pi 1.6.0。
 
 ## License
 

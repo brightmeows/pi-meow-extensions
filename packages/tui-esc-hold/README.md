@@ -21,7 +21,7 @@ pi install npm:@brightmeows/pi-tui-esc-hold
 
 ## 适配版本
 
-实测 pi 1.5.2。
+实测 pi 1.6.0。
 
 ## License
 

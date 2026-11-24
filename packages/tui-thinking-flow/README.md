@@ -19,7 +19,7 @@ pi install npm:@brightmeows/pi-tui-thinking-flow
 
 ## 版本敏感性
 
-实现方式为接管 `AssistantMessageComponent` 的渲染方法（pi 对 thinking 渲染暂无 replace 钩子），私有成员经形状守卫读取，结构不匹配时降级原生渲染不崩溃。跨 pi 升级必须 tmux 实测复核。当前实测 pi 1.5.2。
+实现方式为接管 `AssistantMessageComponent` 的渲染方法（pi 对 thinking 渲染暂无 replace 钩子），私有成员经形状守卫读取，结构不匹配时降级原生渲染不崩溃。跨 pi 升级必须 tmux 实测复核。当前实测 pi 1.6.0。
 
 ## License
 

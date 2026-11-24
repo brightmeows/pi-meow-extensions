@@ -17,7 +17,7 @@ pi install npm:@brightmeows/pi-subdir-agents-md
 
 ## 版本敏感性
 
-原生基准判定依赖 `ctx.getSystemPrompt()` 返回的会话系统提示词口径，跨 pi 升级需复核。当前实测 pi 1.5.2。
+原生基准判定依赖 `ctx.getSystemPrompt()` 返回的会话系统提示词口径，跨 pi 升级需复核。当前实测 pi 1.6.0。
 
 ## License
 

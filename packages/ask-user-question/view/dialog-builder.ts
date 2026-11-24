@@ -48,13 +48,13 @@ export {
 const MIN_SCROLL_ROWS_WITH_PINNED_HEADING = 3;
 
 /** No-overflow path: append the residual spacer rows after the footer. */
-function renderFitsTerminal(natural: string[], spacerRows: number): string[] {
+function renderFitsTerminal(natural: readonly string[], spacerRows: number): readonly string[] {
   return spacerRows > 0 ? [...natural, ...Array<string>(spacerRows).fill("")] : natural;
 }
 
 /** Terminal too small for any middle content — show just chrome, hard-clamped to termRows. */
 function renderChromeOnly(
-  natural: string[],
+  natural: readonly string[],
   topFixed: number,
   bottomFixed: number,
   termRows: number,
@@ -167,7 +167,7 @@ export class DialogView implements StatefulView<DialogProps> {
   // `notesInput`). DialogView has no cached layout of its own.
   invalidate(): void {}
 
-  render(width: number): string[] {
+  render(width: number): readonly string[] {
     const state = this.liveProps.state;
     const onSubmit = this.config.isMulti && state.currentTab === this.config.questions.length;
     const strategy = onSubmit && this.submitStrategy ? this.submitStrategy : this.questionStrategy;

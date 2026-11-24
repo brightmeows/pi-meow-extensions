@@ -20,7 +20,7 @@ pi install npm:@brightmeows/pi-tui-editor-input-tweaks
 
 ## 版本敏感性
 
-渲染主体按 pi 编辑器内部结构等价重写（grapheme 遍历、假光标注入、鼠标命中计数），跨 pi 升级必须实测复核。当前实测 pi 1.5.2。
+渲染主体按 pi 编辑器内部结构等价重写（grapheme 遍历、假光标注入、鼠标命中计数），跨 pi 升级必须实测复核。当前实测 pi 1.6.0。
 
 ## License
 
