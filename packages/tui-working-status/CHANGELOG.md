@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/brightmeows/pi-meow-extensions/compare/pi-tui-working-status-v0.1.1...pi-tui-working-status-v0.1.2) (2026-11-25)
+
+
+### Bug Fixes
+
+* **pi-tui-working-status:** Bun 下补等待态定时兜底 ([bd5a21a](https://github.com/brightmeows/pi-meow-extensions/commit/bd5a21a389c3734bce5f459178c0e27ab645450b))
+* **pi-tui-working-status:** Bun 下补等待态定时兜底 ([2ed8687](https://github.com/brightmeows/pi-meow-extensions/commit/2ed8687a6518b55666d13ddc420b719dd5fc4b98))
+
 ## [0.1.1](https://github.com/brightmeows/pi-meow-extensions/compare/pi-tui-working-status-v0.1.0...pi-tui-working-status-v0.1.1) (2026-11-20)
 
 
