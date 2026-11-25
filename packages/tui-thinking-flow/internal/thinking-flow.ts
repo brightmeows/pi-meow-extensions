@@ -11,7 +11,7 @@
  * - expanded 渲染统一带上下双标题行（含流式进行中的块；统计随流式
  *   同步跳动属预期，2026-10-17 决策），点击任一行等效收起
  *
- * 渲染等价性（与 pi 1.2.0 assistant-message.js 对照）：
+ * 渲染等价性（与 pi 1.6.0 assistant-message.js 对照；未采用 slot 复用）：
  * - segments 预扫合并连续 thinking 块（join "\n\n"），text 打断；
  *   空白块不入列——与原循环的 run 收集、空 run 跳过等价
  * - 开头 Spacer 条件（存在可见内容）、run 间 Spacer 条件（后方仍有
@@ -122,6 +122,8 @@ interface PatchedThis {
   lastMessage: AssistantMessage | undefined;
   hasToolCalls: boolean;
   isStreaming: boolean;
+  messageId?: string;
+  timestamp?: string;
   thinkingVisibilityOverrides: Map<number, boolean>;
   updateContent: UpdateContentFn;
 }
@@ -161,11 +163,13 @@ function renderExpandedThinking(text: string, self: PatchedThis): Component {
   };
   section.addChild(
     new Markdown(text, self.outputPad, 0, self.markdownTheme, style, {
-      transform: createMarkdownTransform(
-        "assistant-thinking",
-        self.isStreaming,
-        self.markdownTransformers,
-      ),
+      transform: createMarkdownTransform({
+        messageType: "assistant-thinking",
+        isStreaming: self.isStreaming,
+        transformers: self.markdownTransformers,
+        messageId: self.messageId,
+        timestamp: self.timestamp,
+      }),
     }),
   );
 
@@ -219,7 +223,13 @@ function renderThinkingRun(self: PatchedThis, run: ThinkingRunContext): Componen
 
 function renderAssistantText(text: string, self: PatchedThis, isStreaming: boolean): Component {
   return new Markdown(text, self.outputPad, 0, self.markdownTheme, undefined, {
-    transform: createMarkdownTransform("assistant", isStreaming, self.markdownTransformers),
+    transform: createMarkdownTransform({
+      messageType: "assistant",
+      isStreaming,
+      transformers: self.markdownTransformers,
+      messageId: self.messageId,
+      timestamp: self.timestamp,
+    }),
   });
 }
 
