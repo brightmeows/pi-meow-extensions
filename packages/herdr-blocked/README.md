@@ -20,7 +20,7 @@ pi install npm:@brightmeows/pi-herdr-blocked
 
 ## 适配版本
 
-实测 pi 1.5.2，herdr 0.9.1。
+pi 1.6.0，herdr 0.9.5。
 
 ## License
 

@@ -37,7 +37,7 @@ pi install npm:@brightmeows/pi-git-attribution
 
 ## 适配版本
 
-实测 pi 1.5.2。hook 脚本行为由真 git 集成测试覆盖（`pnpm test`）。
+实测 pi 1.6.0。hook 脚本行为由真 git 集成测试覆盖（`pnpm test`）。
 
 ## License
 

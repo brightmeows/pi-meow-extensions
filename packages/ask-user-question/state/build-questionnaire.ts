@@ -64,7 +64,7 @@ export interface QuestionnaireBuilt {
   adapter: QuestionnairePropsAdapter;
   notesInput: Editor;
   inlineInput: Editor;
-  render: (width: number) => string[];
+  render: (width: number) => readonly string[];
   invalidate: () => void;
 }
 
