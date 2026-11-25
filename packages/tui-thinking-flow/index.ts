@@ -31,7 +31,7 @@
  * - 接管 AssistantMessageComponent.prototype.updateContent。pi 对 thinking
  *   渲染暂无 replace 钩子（官方 issue can1357/oh-my-pi#1728 讨论中），
  *   monkey-patch 是唯一路径，与 pi-thinking-box / pi-thinking-steps 同手法；
- *   渲染逻辑按 pi 1.2.0 assistant-message.js 等价重写，thinking 分支外
+ *   渲染逻辑按 pi 1.6.0 assistant-message.js 对照重写（未采用 slot 复用），thinking 分支外
  *   行为不变（text 渲染、Spacer 节奏、abort/error/length 尾注全保留）
  * - 私有成员经形状守卫读取（家规：bun 打包未初始化字段丢弃，in 探测 +
  *   降级 original 原生渲染），结构不匹配时不崩溃
@@ -40,7 +40,8 @@
  *   换主题自动适配）；单例不可用（headless 等）时降级裸文本
  * - 标题统计：字符数为精确值，Tokens 按 CJK 每字 1 token、其余每 4 字符
  *   1 token 估算（消息 usage 无法按单 run 拆分，只作量级指示）
- * - createMarkdownTransform 为包内副本（内部模块未公开导出，家规"自备副本"）
+ * - createMarkdownTransform 为包内副本（内部模块未公开导出，家规"自备副本"）；
+ *   1.6.0 新增的可选 messageId/timestamp 已同步传入
  *
  * 已知边界：
  * - pi 升级若改 assistant-message.js 渲染结构，需同步本扩展：升 pi 后按

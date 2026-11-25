@@ -21,6 +21,8 @@ pi install npm:@brightmeows/pi-tui-thinking-flow
 
 实现方式为接管 `AssistantMessageComponent` 的渲染方法（pi 对 thinking 渲染暂无 replace 钩子），私有成员经形状守卫读取，结构不匹配时降级原生渲染不崩溃。跨 pi 升级必须 tmux 实测复核。当前实测 pi 1.6.0。
 
+1.6.0 的 Markdown 转换上下文新增可选 `messageId` 与 `timestamp`，本扩展已同步传入；内置的 Markdown slot 复用未采用。
+
 ## License
 
 MIT
