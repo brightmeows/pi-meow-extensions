@@ -12,7 +12,8 @@
  *   agent_start                              → 准备请求（run 启动与组装并入）
  *   before_provider_request                  → 发送请求 <大小>（连接+上传中；失败过则附重试序号）
  *   undici bodySent（发送窗口内首个命中）    → 等待模型响应（上传完成，排队+prefill+首字节）
- *   after_provider_response                  → 解除发送窗口；bodySent 未命中时兜底切等待模型响应
+ *   Bun 500ms 定时兜底（无 bodySent）        → 等待模型响应（Bun 原生 fetch 不发 diagnostics）
+ *   after_provider_response                  → 解除发送窗口；定时器与 bodySent 都未命中时兜底切等待
  *   message_start（assistant 且非 error）    → 重试计数清零（不切状态）
  *   首个 provider_stream_event               → 生成中（服务器真正开始输出）
  *   message_end（assistant stopReason=error）→ 重试计数 +1，不切状态
@@ -26,7 +27,7 @@
  * 整条秒表恒定落后一拍。interval 每秒刷新且每次切换重建（tick 落在
  * since+k 秒整点）；秒表仅状态活跃时运行。
  *
- * 请求段三段切分的机制事实（pi 1.4.0 源码 + node 26 undici 本地实测）：
+ * 请求段三段切分的机制事实（pi 1.6.0 源码 + Node 26 undici 与 Bun 1.4.4 实测）：
  * - 扩展事件面只有三刀：before_provider_request（发出前）、
  *   after_provider_response（响应头到达，仅 2xx）、provider_stream_event
  *   （每个原始 SSE 事件）；连接与上传过程没有任何钩子——请求体交给
@@ -50,7 +51,7 @@
  *   after_provider_response——它在适配器内直调分发，恒早于 SSE 循环的
  *   首事件；message_start 不切状态，避免把生成中打回等待
  *
- * 实测事实（pi 1.4.0，tmux 捕帧 + 本地 500/SSE 服务器）：
+ * 实测事实（pi 1.6.0，tmux 捕帧 + 本地 500/SSE 服务器，含 Bun 单文件二进制）：
  * - after_provider_response 仅在响应成功到达时触发；500 等错误路径不触发，
  *   错误以 stopReason="error" + errorMessage 的合成 assistant 消息送达
  *   （message_start/message_end 均携带）——重试计数挂 message_end，
@@ -72,15 +73,16 @@
  * - bodySent 关联用发送窗口内首个命中，不按 path 过滤：扩展拿不到
  *   baseUrl，且窗口内并发的上传基本只有主请求与 cacheWarmer 预热请求
  *   （同前缀同模型，bodySent 先后差亚秒级，语义同为"上传完成"）；
- *   cacheWarming 默认 streaming 开启且完整复用扩展事件链，主/暖请求
+ *   cacheWarming 设为 streaming 时完整复用扩展事件链，主/暖请求
  *   在扩展事件面不可区分——这是旧版 message_start 起点就存在的污染，
  *   新方案未引入新类型
- * - 降级路径：无 node:diagnostics_channel（bun binary 发行形态）或
- *   channel 名失效时 bodySent 永不命中，状态停在发送请求直到
- *   message_start 兜底切等待模型响应，行为近似旧版且分段仍比旧版准；
- *   bedrock 走 AWS SDK 不经 undici，同样走兜底。mihomo TUN 下 bodySent
- *   只代表写入 TUN 设备完成（严格意义偏早），上行饱和时内核反压会让
- *   它真实推迟，方向仍正确
+ * - 降级路径：Bun 单文件二进制里，Bun 把裸 undici 解析成内置 shim，
+ *   shim 没有 install，globalThis.fetch 保持 Bun 原生 fetch，
+ *   undici:request:bodySent 永不触发；本扩展在 Bun 下用 500ms 定时器
+ *   兜底切等待，bodySent 仍优先。Node 下仍以 bodySent 为准；bedrock
+ *   等不经 undici 的传输沿用 after_provider_response 兜底。mihomo TUN
+ *   下 bodySent 只代表写入 TUN 设备完成（严格意义偏早），上行饱和时
+ *   内核反压会让它真实推迟，方向仍正确
  * - dc listener 异常会同步传播进 fetch 调用栈：回调整体 try/catch
  *   吞掉，观测不得影响请求；订阅挂 globalThis 槽，reload 先 dispose
  *   旧订阅（与 timer 同款幂等）
@@ -96,8 +98,8 @@
  *   避免状态闪成嵌套工具名后回不去
  * - setWorkingMessage 不带参数即恢复内置默认；文案变化才调用，
  *   避免逐 delta 触发无谓重渲染
- * - 秒表 timer 与 dc 订阅存 globalThis 槽，重装先清旧（reload 幂等，
- *   旧闭包不得残留 stale ctx 调用）
+ * - 秒表 timer、等待兜底 timer 与 dc 订阅存 globalThis 槽，重装先清旧
+ *   （reload 幂等，旧闭包不得残留 stale ctx 调用）
  */
 
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
@@ -111,6 +113,9 @@ const MB = KB * 1024;
 
 const TIMER_KEY = Symbol.for("pi-meow-working-status:timer");
 const DC_KEY = Symbol.for("pi-meow-working-status:dc");
+const WAIT_TIMER_KEY = Symbol.for("pi-meow-working-status:wait-timer");
+const BUN_WAIT_FALLBACK_MS = 500;
+const IS_BUN = typeof process !== "undefined" && "bun" in process.versions;
 
 const fmtSize = (bytes: number): string =>
   bytes < MB ? `${Math.ceil(bytes / KB)} KB` : `${(bytes / MB).toFixed(1)} MB`;
@@ -190,6 +195,70 @@ const createTicker = (): Ticker => {
   };
 };
 
+interface WaitFallback {
+  arm: () => void;
+  clear: () => void;
+}
+
+const createWaitFallback = (onTimeout: () => void): WaitFallback => {
+  const clear = (): void => {
+    const globals = globalThis as unknown as Record<symbol, unknown>;
+    const timer = globals[WAIT_TIMER_KEY] as ReturnType<typeof setTimeout> | undefined;
+    if (timer !== undefined) {
+      clearTimeout(timer);
+      delete globals[WAIT_TIMER_KEY];
+    }
+  };
+
+  const arm = (): void => {
+    clear();
+    if (!IS_BUN) {
+      return;
+    }
+    const globals = globalThis as unknown as Record<symbol, unknown>;
+    globals[WAIT_TIMER_KEY] = setTimeout(() => {
+      delete globals[WAIT_TIMER_KEY];
+      onTimeout();
+    }, BUN_WAIT_FALLBACK_MS);
+  };
+
+  return { arm, clear };
+};
+
+interface ToolTracker {
+  start: (event: { toolCallId: string; toolName: string }, ctx: ExtensionContext) => void;
+  end: (event: { toolCallId: string; parentToolCallId?: string }, ctx: ExtensionContext) => void;
+  reset: () => void;
+}
+
+const createToolTracker = (ticker: Ticker): ToolTracker => {
+  const names = new Map<string, string>();
+  const starts = new Map<string, number>();
+  return {
+    start: (event, ctx) => {
+      names.set(event.toolCallId, event.toolName);
+      starts.set(event.toolCallId, Date.now());
+      ticker.show(ctx, `执行工具 ${event.toolName}`, starts.get(event.toolCallId));
+    },
+    end: (event, ctx) => {
+      starts.delete(event.toolCallId);
+      names.delete(event.toolCallId);
+      const parentId = event.parentToolCallId;
+      if (parentId === undefined) {
+        return;
+      }
+      const parentName = names.get(parentId);
+      if (parentName !== undefined) {
+        ticker.show(ctx, `执行工具 ${parentName}`, starts.get(parentId));
+      }
+    },
+    reset: () => {
+      names.clear();
+      starts.clear();
+    },
+  };
+};
+
 interface DcSubscription {
   dispose: () => void;
 }
@@ -235,22 +304,30 @@ const subscribeRequestBodySent = (onBodySent: () => void): void => {
 
 export default function workingStatus(pi: ExtensionAPI): void {
   const ticker = createTicker();
-  const names = new Map<string, string>();
-  const starts = new Map<string, number>();
+  const tools = createToolTracker(ticker);
   let failedAttempts = 0;
   let latestCtx: ExtensionContext | undefined;
   // 发送窗口：before_provider_request 武装，bodySent 首个命中即解除；
-  // 响应头兜底（message_start 处）与 agent_end 兜底解除，防窗口跨请求残留
+  // 响应头兜底（after_provider_response 处）与 agent_end 兜底解除，防窗口跨请求残留
   let uploadArmed = false;
   // 当前请求是否已见首个 provider SSE 事件——“生成中”的真实起点，
   // 每次新请求（before_provider_request）重置
   let streamSeen = false;
-
+  const waitFallback = createWaitFallback(() => {
+    if (!uploadArmed || latestCtx === undefined) {
+      return;
+    }
+    uploadArmed = false;
+    ticker.show(latestCtx, WAITING);
+  });
+  // 清掉上一次 reload 留下的兜底定时器
+  waitFallback.clear();
   subscribeRequestBodySent(() => {
     if (!uploadArmed || latestCtx === undefined) {
       return;
     }
     uploadArmed = false;
+    waitFallback.clear();
     ticker.show(latestCtx, WAITING);
   });
 
@@ -266,21 +343,25 @@ export default function workingStatus(pi: ExtensionAPI): void {
     latestCtx = ctx;
     uploadArmed = true;
     streamSeen = false;
+    waitFallback.clear();
     const bytes = payloadSize(event.payload);
     const size = bytes > 0 ? ` ${fmtSize(bytes)}` : "";
     const retry = failedAttempts > 0 ? ` · 重试${failedAttempts}` : "";
     ticker.show(ctx, `发送请求${size}${retry}`);
+    waitFallback.arm();
   });
   pi.on("provider_stream_event", (_event, ctx) => {
     if (streamSeen) {
       return;
     }
     streamSeen = true;
+    waitFallback.clear();
     ticker.show(ctx, GENERATING);
   });
   pi.on("after_provider_response", (_event, ctx) => {
     // 响应头已到（直调分发，恒早于 SSE 首事件）：解除发送窗口；降级兜底切等待
     uploadArmed = false;
+    waitFallback.clear();
     if (!streamSeen) {
       ticker.show(ctx, WAITING);
     }
@@ -305,31 +386,19 @@ export default function workingStatus(pi: ExtensionAPI): void {
       failedAttempts += 1;
     }
   });
-  pi.on("tool_execution_start", (event, ctx) => {
-    names.set(event.toolCallId, event.toolName);
-    starts.set(event.toolCallId, Date.now());
-    ticker.show(ctx, `执行工具 ${event.toolName}`, starts.get(event.toolCallId));
-  });
-  pi.on("tool_execution_end", (event, ctx) => {
-    starts.delete(event.toolCallId);
-    names.delete(event.toolCallId);
-    const parentId = event.parentToolCallId;
-    if (parentId === undefined) {
-      return;
-    }
-    const parentName = names.get(parentId);
-    if (parentName !== undefined) {
-      ticker.show(ctx, `执行工具 ${parentName}`, starts.get(parentId));
-    }
-  });
+  pi.on("tool_execution_start", tools.start);
+  pi.on("tool_execution_end", tools.end);
   pi.on("agent_end", (_event, ctx) => {
     // 重试紧随 agent_end 而来，此处清零计数会让下一次请求丢掉重试序号；
     // 计数清零只挂 before_agent_start
-    names.clear();
-    starts.clear();
+    tools.reset();
     uploadArmed = false;
     streamSeen = false;
+    waitFallback.clear();
     ticker.clear(ctx);
   });
-  pi.on("session_shutdown", (_event, ctx) => ticker.clear(ctx));
+  pi.on("session_shutdown", (_event, ctx) => {
+    waitFallback.clear();
+    ticker.clear(ctx);
+  });
 }
