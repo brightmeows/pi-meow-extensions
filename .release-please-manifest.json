@@ -11,6 +11,6 @@
   "packages/tui-editor-input-tweaks": "0.1.1",
   "packages/tui-esc-hold": "0.1.1",
   "packages/tui-statusline": "0.1.2",
-  "packages/tui-thinking-flow": "0.1.1",
-  "packages/tui-working-status": "0.1.1"
+  "packages/tui-thinking-flow": "0.1.2",
+  "packages/tui-working-status": "0.1.2"
 }

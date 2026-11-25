@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/brightmeows/pi-meow-extensions/compare/pi-tui-thinking-flow-v0.1.1...pi-tui-thinking-flow-v0.1.2) (2026-11-25)
+
+
+### Bug Fixes
+
+* **pi-tui-thinking-flow:** 同步 1.6.0 Markdown 转换上下文 ([0e936b2](https://github.com/brightmeows/pi-meow-extensions/commit/0e936b2fc38624f698186a0f3a7510cf66d7c096))
+* **pi-tui-thinking-flow:** 同步 1.6.0 Markdown 转换上下文 ([2485665](https://github.com/brightmeows/pi-meow-extensions/commit/248566599831c5af19ad5c4242e8b4cfe72b1534))
+
 ## [0.1.1](https://github.com/brightmeows/pi-meow-extensions/compare/pi-tui-thinking-flow-v0.1.0...pi-tui-thinking-flow-v0.1.1) (2026-11-20)
 
 
